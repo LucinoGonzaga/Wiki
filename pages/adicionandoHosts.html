@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Adicionando host no Apache</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" type="text/css" media="screen" href="../css/style.css"/> 
+        <script src="../js/1.12.1.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                var nome = 'sioc';
+                $('#nome').val(nome);
+                $('#nome').keyup(function () {
+                    $('.orange').html($(this).val());
+                    $('.alto').html($('.orange').html());
+                });
+
+                var nome = 'sioc.doc.eb.mil.br';
+                $('#dominio').val(nome);
+                $('#dominio').keyup(function () {
+                    $('.green').html($(this).val());
+                });
+
+                $('input').trigger('keyup');
+            });
+        </script>
+    </head>
+    <body>
+        <div>
+            <h1>Adicionando host no Apache</h1>
+            <h3><i>Nome do projeto  </i><input type="text" id="nome" autofocus=""/></h3>
+            <h3><i>Domíninio  </i><input type="text" id="dominio"/></h3>
+            <h3>Para adicionar um host comum (http)</h3>
+            <ol>
+                <li>Entre na pasta sites-available <pre>cd /etc/apache2/sites-available/</pre></li>
+                <li>Crie um arquivo com o nome do sistema <pre>nano <span class="orange"></span>.conf</pre></li>
+                <li>Adicione o bloco abaixo
+                    <pre>
+# <span class="orange alto"></span>
+&lt;VirtualHost *:80&gt;
+  ServerName <span class="green"></span>
+  ServerAdmin leandroj.r.ximenes@gmail.com
+  DocumentRoot /var/www/html/<span class="orange"></span>
+  ErrorLog ${APACHE_LOG_DIR}/error_<span class="orange"></span>.log
+  CustomLog ${APACHE_LOG_DIR}/access_<span class="orange"></span>.log combined
+&lt;/VirtualHost&gt;
+                    </pre>
+                </li>
+                <li>Apos salvar, execute o comando <pre>a2ensite <span class="orange"></span>.conf </pre></li>
+                <li>Verifique se o apache está ok<pre>apachectl configtest</pre></li>
+                <li>Reinicie o apache<pre>systemctl restart apache2</pre></li>
+            </ol>   
+
+            <h3>Para adicionar um host (http e https)</h3>
+            <ol>
+                <li>Entre na pasta sites-available <pre>cd /etc/apache2/sites-available/</pre></li>
+                <li>Crie um arquivo com o nome do sistema <pre>nano <span class="orange"></span>.conf</pre></li>
+                <li>Adicione o bloco abaixo
+                    <pre>
+# <span class="orange alto"></span>
+&lt;VirtualHost *:80&gt;
+  ServerName <span class="green"></span>
+  ServerAdmin leandroj.r.ximenes@gmail.com
+  DocumentRoot /var/www/html/<span class="orange"></span>
+  # Redirect / https://<span class="green"></span>/<span class="red">  #Para não acessar mais o http, só https</span>
+  ErrorLog ${APACHE_LOG_DIR}/error_<span class="orange"></span>.log
+  CustomLog ${APACHE_LOG_DIR}/access_<span class="orange"></span>.log combined
+&lt;/VirtualHost&gt;
+
+&lt;VirtualHost *:443&gt;
+  ServerName <span class="green"></span>
+  ServerAdmin leandroj.r.ximenes@gmail.com
+  DocumentRoot /var/www/html/<span class="orange"></span>
+  ErrorLog ${APACHE_LOG_DIR}/error_<span class="orange"></span>.log
+  CustomLog ${APACHE_LOG_DIR}/access_<span class="orange"></span>.log combined
+  SSLEngine on
+  SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+  Protocols h2 http/1.1
+&lt;/VirtualHost&gt;
+                    </pre>
+                </li>
+                <li>Apos salvar, execute o comando <pre>a2ensite <span class="orange"></span>.conf </pre></li>
+                <li>Verifique se o apache está ok<pre>apachectl configtest</pre></li>
+                <li>Reinicie o apache<pre>systemctl restart apache2</pre></li>
+            </ol>   
+
+            <h3>Para adicionar um host (http e https) para o Zend</h3>
+            <ol>
+                <li>Entre na pasta sites-available <pre>cd /etc/apache2/sites-available/</pre></li>
+                <li>Crie um arquivo com o nome do sistema <pre>nano <span class="orange"></span>.conf</pre></li>
+                <li>Adicione o bloco abaixo
+                    <pre>
+# <span class="orange alto"></span>
+&lt;VirtualHost *:80&gt;
+  ServerName <span class="green"></span>
+  ServerAdmin leandroj.r.ximenes@gmail.com
+  DocumentRoot /var/www/html/<span class="orange"></span>/public
+  # Redirect / https://<span class="green"></span>/ <span class="red">  #Para não acessar mais o http, só https</span>
+
+  &lt;Directory /var/www/html/<span class="orange"></span>/public&gt;
+       AllowOverride All
+       Require all granted
+  &lt;/Directory&gt;
+  ErrorLog ${APACHE_LOG_DIR}/error_<span class="orange"></span>.log
+  CustomLog ${APACHE_LOG_DIR}/access_<span class="orange"></span>.log combined
+&lt;/VirtualHost>
+
+&lt;VirtualHost *:443&gt;
+  ServerName <span class="green"></span>
+  ServerAdmin leandroj.r.ximenes@gmail.com
+  DocumentRoot /var/www/html/<span class="orange"></span>/public
+
+  &lt;Directory /var/www/html/<span class="orange"></span>/public&gt;
+       AllowOverride All
+       Require all granted
+  &lt;/Directory&gt;
+  ErrorLog ${APACHE_LOG_DIR}/error_<span class="orange"></span>.log
+  CustomLog ${APACHE_LOG_DIR}/access_<span class="orange"></span>.log combined
+  SSLEngine on
+  SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+  Protocols h2 http/1.1
+&lt;/VirtualHost&gt;
+                    </pre>
+                </li>
+                <li>Apos salvar, execute os comandos <pre>a2ensite <span class="orange"></span>.conf </pre>
+                    <pre>a2enmod rewrite</pre></li>
+                <li>Verifique se o apache está ok<pre>apachectl configtest</pre></li>
+                <li>Reinicie o apache<pre>systemctl restart apache2</pre></li>
+            </ol>   
+        </div>
+    </body>
+</html>

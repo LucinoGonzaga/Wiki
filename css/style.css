@@ -1,0 +1,36 @@
+.brown{
+    color: #6d3206;
+}
+
+.orange{
+    color: #ce7b00;
+}
+
+.gray{
+    color: #969696;
+}
+
+.greenyellow{
+    color: greenyellow;
+}
+
+.green{
+    color: green;
+}
+
+.red{
+    color: red;
+}
+
+.blue{
+    color: blue;
+}
+
+span{
+    font-weight: normal;
+}
+
+.codigo{
+    font-family: Consolas, monaco, monospace;
+    font-size: 13px;
+}

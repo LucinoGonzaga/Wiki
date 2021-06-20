@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Wiki</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <style type="text/css">
+        html {
+            font-size: 19px;
+            font-weight: bold;
+        }
+        
+        div {
+            width: 780px;
+        }
+        
+        thead {
+            text-align: left
+        }
+        
+        a:visited {
+            color: blue;
+        }
+        
+        #myTable_filter {
+            float: left;
+            width: 250px;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="css/datatable.css">
+    <script src="js/1.12.1.min.js"></script>
+    <script src="js/dataTable.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable({
+                paging: false,
+                info: false,
+                oLanguage: {
+                    "sProcessing": "Processing...",
+                    "sZeroRecords": "No results found",
+                    "sInfo": "Showing from _START_ to _END_ of _TOTAL_ records",
+                    "sInfoEmpty": "Showing from 0 to 0 de 0 records",
+                    "sInfoFiltered": "(Filtered from _MAX_ records in total)",
+                    "sSearch": "Serach"
+                },
+                "aaSorting": [
+                    [2, "desc"],
+                    [0, "asc"]
+                ]
+            });
+
+            $('a').click(function() {
+                var href = $(this).attr('href').split('/');
+                var qtdes = getCookie(href[1]);
+                qtdes++;
+                setCookie(href[1], qtdes);
+
+            });
+        });
+
+        function getCookie(name) {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var val = cookies[i].split('=');
+                if (val[0] == name || val[0] == ' ' + name) {
+                    return val[1];
+                }
+            }
+            return 0;
+        }
+
+        function setCookie(name, value) {
+            var cookie = name + "=" + escape(value) + "; expires=Thu, 18 Dec 2022 12:00:00 UTC; path=/";
+
+            document.cookie = cookie;
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <h1><a href="index.html">Wiki</a></h1>
+        <table id="myTable">
+            <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>Category</th>
+                    <th>Access</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="pages/instalando_apache_php-fpm-docker.html">Installing and configuring apache + php-fpm in the docker (Ubuntu)</a>
+                    </td>
+                    <td>Docker</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="pages/git_comands.html">Git comands</a></td>
+                    <td>Git</td>
+                </tr>
+            </tbody>
+        </table>
+        <script>
+            $('tbody > tr').each(function() {
+                var href = $(this).children().children().attr('href').split('/');
+                var qtde = getCookie(href[1])
+                $(this).append('<td>' + qtde + '</td>');
+            });
+        </script>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Installing and configuring apache + php-fpm in the docker (Ubuntu)</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style.css" />
+</head>
+
+<body>
+    <div>
+        <h1>Installing and configuring apache + php-fpm in the docker (Ubuntu)</h1>
+        <ol>
+            <li>
+                <font class="red">On your operating system, update the date and time.</font>
+            </li>
+            <li>
+                <pre># apt-get update</pre>
+            </li>
+        </ol>
+        <h3>Apache2</h3>
+        <ol>
+            <li>Install apache:
+                <pre># apt install apache2 libapache2-mod-fcgid </pre>
+                <pre># a2enmod actions fcgid alias proxy_fcgi </pre>
+                <pre># nano /etc/apache2/conf-available/docker-fastcgi.conf </pre>
+            </li>
+            <li>
+                <p>Save the config in the file</p>
+                <pre>&lt;FilesMatch &quot;.+\.ph(ar|p|tml)$&quot;&gt;
+    SetHandler &quot;proxy:fcgi://localhost:9000&quot;
+&lt;/FilesMatch&gt;</pre>
+                <pre># a2enconf docker-fastcgi </pre>
+                <pre># service apache2 restart</pre>
+            </li>
+            <li>Allow incoming HTTP and HTTPS traffic for this profile:
+                <pre># ufw allow in "Apache Full"</pre>
+            </li>
+            <li>Open in browser http://localhost/ or the ip of your machine on the network http://numero-do-seu-ip/
+                <p></p>
+            </li>
+            <li>The apache page will appear</li>
+        </ol>
+
+        <h3>Php-fpm (DOCKER)</h3>
+        <ol>
+            <li> Download the file
+                <a download="conf-php-fpm-docker.tar.gz" href="data:application/gzip;base64,H4sIAAAAAAAAA+1a627bNhTO3/kpCKfoBYiulu1Ug7sNaIsNaNeiRYEC62DQEi2zkUhFopw4XZ9m
+                    j7IX26EuvihOVDuO0xT8giQ0eXjIw0Oe80m0z70TkhjxJO7rljaOI+N5XjOmITnYEUxAv9uV/61+
+                    11z+L+F0zf6B5ZiW6Ti9rtU7gFbbdA6QuasJXIcsFThB6CDGWcg9kuJkvVxT+z3Fy3dvXiPwvlu6
+                    v9V69+FPhMh5zBOBJkLE6TBO+PlskJddw0g87sLvr5ap9/q6faxbttux7GP0qYUADx9e1XnTvlt2
+                    HW/R05tw9Og37zSjCXHdvJ/7VupA7QYl7Z8foWfPkEGEZ+BYyF/d42y8UA41WkAEymIfC7KuPkiw
+                    T5A2y5fey5IQaa9QtdznPhllgc6TwJBnMi0rNFt/qh/rIrhAGkeX6j61DlFKEPvvX45GmJ7DFucI
+                    J2Dg9LL0US5CUIRZhsOIMJgmQR4P+WkGOqBjNKJ5LZwAHLYO6/OEadJY87GWZliLMIzC8LfOs1wN
+                    eQi184vxNSKev9K4aIDtSy+WVlY3pAdokCWwqhpheBQSrei6EIrwCdgYEsxqdaufKIP4EIa1vdK+
+                    IMwfknNBWEo5Gzx4PKbMR0aWJka+RkZIRzKoGnOZ1EAawxEpbdBT/qSNni13kVtIdpGT1/3K8ZTR
+                    +uBlS0IiLsiwsG/AWTvfiDfWN8HMD0ky8EdBnKvcgU55MAdPTbOzozniTHAZt8XuzAZxRjwxHGHv
+                    ZAdaqU9OyGzg58l0E2WH18wx5MHAmGKpJqh6QfGmc/XJGJKb2GInFdmiimTVWdFm5UBwCMYJIWIW
+                    k57mk+mi+nNMgp6tiSwZ8dWWmAW1itPVz6MLe7WCetlqxXkULouAuYUbNLBBgwOpLcJDHKSnMOEz
+                    KiZaXh4smV00NisJfAgzuYrKWs2nSaGJMi/MfGJUEtLwNa1XDTJf0s8PHjPIat4TGK1JGEUzmDht
+                    Eot9XtoPpWFeatQ88iIsJjuaAAJXFjKH10nJTNOoijLRLAQbo1Em5ThuFLqgcav14uPbN+9fIAhr
+                    ZuuuadzW8Jf4v303/L8DHwr+bzuW3e0X/N9U/H8fWOL/ufuvpf+KwQODL3JeTGDXFClAS8myueib
+                    Jz0jKfoHNHnhPHXWWer3wzYj7pNBXrwtnnkDlTkXHMoEO0wIPLSkYgCLe2NeRFOPT0ky9EL5+DOc
+                    8N3o3Y4bNnCta/jW9ZxrLe9ax73W8q+1HGw9DytrL+SjIlQW9twbUrWGLTUOUPGlZsGCMDXLweKj
+                    b6RMzcokZ2qWAi82CoFPmxVJZvWDsKYfB8v8z7kr/tczS/7X6Xf6TsH/LMX/9oEl/uco/qf4n+J/
+                    3yv/KwjTT7XrhKXtef8p4Tav2pY54GaMr1FaUT5F+X50lPxPn0Kog2emEGfMm+ifU852N4Ykeb2e
+                    cxX/s6zq/t/umP1+R/I/WaX43x7wJT/ChoE+pAT9wQQJQ/oeOARBgqMQSA5DeMQzgWKepnQUEoSF
+                    SOgoEyTVq76/yywpO0wpOUM+Sb2ExkLSEMTHwOpoKigL1vV8yRMU8UTes455AoETOh2BmpQKd34F
+                    HnA9ol7CUz6W1CwyxmchZSfGL/Iv9QfHHbNz3M9VtmEikv+0XdQ2dVs320dFfZVC8hFSaP5rnoC+
+                    zEu5pKRNsvsrmDVhCKaFPj7Pec/RqqDMPlIQol69qSQhsrU4UXUBSSWqgUw9/6mLSCoMzfLWtNaS
+                    X/m5SCQZqbWkgsdv2Asmkhl0HeMwrUvEkJte4zgGf8hVWLU9l8gvGM/OzuTU5uUVsa+t1dLfra93
+                    vY0VtkQZ/8sEDocLzjnRZ1G4wzEanv8tu7r/cZyefPCHVtNR9z97QRkv4ax39H67lZJkSsFKNz/Y
+                    xVshd37cRxkNfXclFkBcFUD5XKQvvUOaS0x5mEWVtgoaqsKK4c5LNQnd8MAxPJIPPu7VT0cLoXl/
+                    GTYvDdiW3NOVf9qthWX2RpbZ98gyayPLyi/+fc+moTVoqYeJm6OM/wuf3MIYDfxfYhH/ZZ6wuo7i
+                    //vB8vv/4vvfux8jz//9K/P/iv8tS+b/rtW3D1B391O5DOX/2vd/dj/GVv7vKP/vA5fv/3Y/xlb+
+                    7yr/7wO193+3Msbm/nf6nZ7y/z5Q+v9Wx9jI/470f8eR3/9U/ldQUFBQUFBQUFBQUFBQUFBQUFBQ
+                    UFBQUNgc/wOqDPBIAFAAAA==">conf-php-fpm-docker.tar.gz</a> and save it to your system home
+            </li>
+            <li>
+                Unzip the file
+                <pre># tar -xvf conf-php-fpm-docker.tar.gz</pre> There are 3 php versions in these Configuration files 7.1, 7.2, 7.4
+                <pre># cd docker</pre> Command to start php-fpm via docker: docker-compose up php(version)
+                <pre>Example: # docker-compose up php7.4 </pre>
+            </li>
+            <li>
+                <span style="color: orange;">Attention, do not use localhost in the browser, use the network ip.</span>
+            </li>
+        </ol>
+        <h3>XDebug configuration in VSCODE</h3>
+        <ol>
+            <li>Install the PHP Debug plugin in VSCODE </li>
+            <li>In the launch.json config file add the config
+                <pre>
+{
+    "name": "Listen for XDebug",
+    "type": "php",
+    "request": "launch",
+    "hostname": "0.0.0.0",
+    "port": 9003,
+    "log" : true,
+    "stopOnEntry": false,
+    "pathMappings": {
+        "/var/www": "/var/www"
+    }
+}
+</pre>
+            </li>
+        </ol>
+
+    </div>
+</body>
+
+</html>

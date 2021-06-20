@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Git Comands</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/style.css" />
+    <script src="../js/1.12.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var nome = 'your-branch';
+            $('#branch').val(nome);
+            $('#branch').keyup(function() {
+                $('.orange').html($(this).val());
+                $('.alto').html($('.orange').html());
+            });
+
+            var nome = '192.168.3.69';
+            $('#approval').val(nome);
+            $('#approval').keyup(function() {
+                $('.green').html($(this).val());
+            });
+
+            var nome = '139.0.6.3';
+            $('#production').val(nome);
+            $('#production').keyup(function() {
+                $('.blue').html($(this).val());
+            });
+
+            $('input').trigger('keyup');
+        });
+    </script>
+</head>
+
+<body>
+    <div>
+        <h1>Git comands</h1>
+        <h3>[localhost] Preparing development environment</h3>
+        <ol>
+            <li>
+                <font class="red">The date and time must be correct.</font>
+                <pre>$ date</pre>
+            </li>
+            <li>
+                If the date is incorrect:
+                <pre>$ sudo date -s 06/18/2021 +21:36:09</pre>
+            </li>
+            <li>Update your operating system:
+                <pre>$ sudo apt-get update</pre>
+            </li>
+            <li>Install git:
+                <pre>$ sudo apt-get install git </pre>
+            </li>
+            <li>Insert your git user:
+                <pre>$ git config --global user.email "you@example.com"</pre>
+                <pre>$ git config --global user.name "Your Name"</pre>
+            </li>
+            <li>Clone repository:
+                <pre>$ git clone https://github.com/LucinoGonzaga/scripts.git</pre>
+            </li>
+        </ol>
+        <h3>[localhost] Starting a new system version (Branch name <input type="text" id="branch" autofocus="" />)</h3>
+        <ol>
+            <li>Access your project directory:
+                <pre>$ cd /var/wamp/www/your-project</pre>
+            </li>
+            <li>Switch to main branch:
+                <pre>$ git checkout main</pre>
+            </li>
+            <li>Update main branch:
+                <pre>$ git pull origin main</pre>
+            </li>
+            <li>Create new branch:
+                <pre>$ git checkout -b <span class="orange"></span></pre>
+            </li>
+        </ol>
+        <h3>[localhost] Sending updates to the approval server</h3>
+        <ol>
+            <li>Display changes:
+                <pre>$ git status</pre>
+            </li>
+            <li>Add changes or add changes all files:
+                <pre>$ git add your-file</pre>
+                <pre>$ git add .</pre>
+            </li>
+            <li>Commenting on the package:
+                <pre>$ git commit -m “your-mensage”</pre>
+            </li>
+            <li>Send branch to server:
+                <pre>$ git push</pre>
+            </li>
+        </ol>
+        <h3>[approval server] Test your branch (IP your approval server <input type="text" id="approval" autofocus="" />)</h3>
+        <ol>
+            <li>Access the approval server:
+                <pre>$ ssh user@<span class="green"></span></pre>
+            </li>
+            <li>Access your project's approval directory:
+                <pre>$ cd /var/www/html/your-project-aproval</pre>
+            </li>
+            <li>Update your approval server:
+                <pre>$ git remote update && git fetch</pre>
+            </li>
+            <li>Check which branch you are on:
+                <pre>$ git branch</pre>
+            </li>
+            <li>Change your branch:
+                <pre>$ git checkout <span class="orange"></span></pre>
+            </li>
+            <li>Update your branch:
+                <pre>$ git pull origin <span class="orange"></span></pre>
+            </li>
+            <li>Exit your serve and test:
+                <pre>$ exit</pre>
+            </li>
+        </ol>
+        <h3>[localhost] Merge your branch with the main branch</h3>
+        <ol>
+            <li>Switch to main branch:
+                <pre>$ git checkout main</pre>
+            </li>
+            <li>Update main branch:
+                <pre>$ git pull origin main</pre>
+            </li>
+            <li>Switch to your branch:
+                <pre>$ git checkout <span class="orange"></span></pre>
+            </li>
+            <li>Merge with main branch:
+                <pre>$ git merge main</pre>
+            </li>
+            <li>* If there are CONFLICTS, resolve them and commit the changes again
+            </li>
+            <li>Upadte main branch:
+                <pre>$ git checkout main</pre>
+            </li>
+            <li>Merge main branch with your branch:
+                <pre>$ git merge <span class="orange"></span> --squash</pre>
+            </li>
+            <li>Commit changes:
+                <pre>$ git commit -m "your-mensage"</pre>
+            </li>
+        </ol>
+        <h3>[localhost] Updating version main branch</h3>
+        <ol>
+            <li>Update main branch:
+                <pre>$ git checkout main</pre>
+            </li>
+            <li>Upadte main branch:
+                <pre>$ git pull origin main</pre>
+            </li>
+            <li>Submit changes to the REMOTE branch:
+                <pre>$ git push origin main</pre>
+            </li>
+        </ol>
+        <h3>[production server] public your branch (IP your production server <input type="text" id="production" autofocus="" />)</h3>
+        <ol>
+            <li>Access the production server:
+                <pre>$ ssh user@<span class="blue"></span></pre>
+            </li>
+            <li>Access your project's production directory:
+                <pre>$ cd /var/www/html/your-project</pre>
+            </li>
+            <li>Update your branch main:
+                <pre>$ git pull origin main</pre>
+            </li>
+            <li>View tags:
+                <pre>$ git tag -n</pre>
+            </li>
+            <li>Add a new tag:
+                <pre>git tag -a vX.X.X -m "your-mensage"</pre>
+            </li>
+        </ol>
+    </div>
+</body>
+
+</html>
